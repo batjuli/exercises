@@ -40,6 +40,8 @@ module Lecture2
     , constantFolding
     ) where
 
+import Data.Char (isSpace)
+
 {- | Implement a function that finds a product of all the numbers in
 the list. But implement a lazier version of this function: if you see
 zero, you can stop calculating product and return 0 immediately.
@@ -48,7 +50,13 @@ zero, you can stop calculating product and return 0 immediately.
 84
 -}
 lazyProduct :: [Int] -> Int
-lazyProduct = error "TODO"
+lazyProduct list = go 1 list
+    where
+        go :: Int -> [Int] -> Int
+        go res [] = res                 -- pattern matching is much preferred over use of head
+        go res (x : xs)                 -- typical pattern for getting head (preferred over actual head function)
+            | x == 0        = 0
+            | otherwise     = go (res * x) xs
 
 {- | Implement a function that duplicates every element in the list.
 
@@ -58,7 +66,8 @@ lazyProduct = error "TODO"
 "ccaabb"
 -}
 duplicate :: [a] -> [a]
-duplicate = error "TODO"
+duplicate [] = []
+duplicate (x : xs) = x : x : duplicate xs
 
 {- | Implement function that takes index and a list and removes the
 element at the given position. Additionally, this function should also
@@ -71,6 +80,17 @@ return the removed element.
 (Nothing,[1,2,3,4,5])
 -}
 removeAt = error "TODO"
+-- removeAt :: Int -> [a] -> (a, [a])
+-- removeAt 0 (x : xs) = (x, xs)
+-- removeAt n (x : xs) = x : removeAt (n-1) xs
+
+-- - struggling
+
+-- removeAt i list = go i [] list
+--     where
+--         go :: Int -> [a] -> [a] -> (a, [a])
+--         go 0 left (x : xs) = (x, concat [left, xs])                 -- i is 0 so remove x and combine back together
+--         go i left (x : xs) = go (i - 1) (left ++ [x]) xs
 
 {- | Write a function that takes a list of lists and returns only
 lists of even lengths.
@@ -81,7 +101,8 @@ lists of even lengths.
 ♫ NOTE: Use eta-reduction and function composition (the dot (.) operator)
   in this function.
 -}
-evenLists = error "TODO"
+evenLists :: [[a]] -> [[a]]
+evenLists = filter (even . length)
 
 {- | The @dropSpaces@ function takes a string containing a single word
 or number surrounded by spaces and removes all leading and trailing
@@ -98,6 +119,8 @@ spaces.
 🕯 HINT: look into Data.Char and Prelude modules for functions you may use.
 -}
 dropSpaces = error "TODO"
+-- dropSpaces :: [a] -> [a]
+-- dropSpaces = dropWhileEnd isSpace . dropWhile isSpace
 
 {- |
 
