@@ -233,7 +233,12 @@ verify that.
 [1,2,3,4,7]
 -}
 merge :: [Int] -> [Int] -> [Int]
-merge = error "TODO"
+merge as [] = as
+merge [] bs = bs
+merge [] [] = []
+merge (a : as) (b : bs)
+    | a < b         = (a : merge as (b : bs))
+    | otherwise     = (b : merge (a : as) bs)
 
 {- | Implement the "Merge Sort" algorithm in Haskell. The @mergeSort@
 function takes a list of numbers and returns a new list containing the
@@ -250,7 +255,8 @@ The algorithm of merge sort is the following:
 [1,2,3]
 -}
 mergeSort :: [Int] -> [Int]
-mergeSort = error "TODO"
+mergeSort [] = []
+mergeSort [a] = [a]
 
 
 {- | Haskell is famous for being a superb language for implementing
