@@ -176,13 +176,25 @@ You're free to define any helper functions.
        treasure besides gold (if you already haven't done this).
 -}
 
--- some help in the beginning ;)
 data Knight = Knight
-    { knightHealth    :: Int
-    , knightAttack    :: Int
-    , knightEndurance :: Int
+    { knightHealth      :: Int
+    , knightAttack      :: Int
+    , knightEndurance   :: Int
+    , knightExp         :: Int
     }
 
+data Dragon = Dragon
+    { dragonHealth      :: Int
+    , dragonAttack      :: Int
+    , dragonType        :: [Char]
+    , dragonExp         :: Int
+    }
+
+data Chest = Chest
+    { chestGold         :: Int
+    }
+
+dragonFight :: Chest -> Dragon -> Knight -> [Char]
 dragonFight = error "TODO"
 
 ----------------------------------------------------------------------------
@@ -204,7 +216,11 @@ False
 True
 -}
 isIncreasing :: [Int] -> Bool
-isIncreasing = error "TODO"
+isIncreasing [] = True
+isIncreasing [_] = True
+isIncreasing (a : b : xs)
+    | a > b         = False
+    | otherwise     = isIncreasing (b : xs)
 
 {- | Implement a function that takes two lists, sorted in the
 increasing order, and merges them into new list, also sorted in the
