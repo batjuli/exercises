@@ -26,7 +26,11 @@ module Lecture2
     , dropSpaces
 
     , Knight (..)
+    , Dragon (..)
+    , Chest (..)
     , dragonFight
+    , arthur
+    , smaug
 
       -- * Hard
     , isIncreasing
@@ -88,7 +92,7 @@ removeAt i (x : xs)
     | otherwise         = (idx, x : ys)
         where
             (idx, ys) = removeAt (i-1) xs
-        
+
 {- | Write a function that takes a list of lists and returns only
 lists of even lengths.
 
@@ -115,8 +119,9 @@ spaces.
 
 🕯 HINT: look into Data.Char and Prelude modules for functions you may use.
 -}
-dropSpaces = error "TODO"
--- dropSpaces :: [a] -> [a]
+-- dropSpaces = error "TODO"
+dropSpaces :: [Char] -> [Char]
+dropSpaces = unwords . words
 -- dropSpaces = dropWhileEnd isSpace . dropWhile isSpace
 
 {- |
@@ -173,26 +178,69 @@ You're free to define any helper functions.
        treasure besides gold (if you already haven't done this).
 -}
 
-data Knight = Knight
-    { knightHealth      :: Int
-    , knightAttack      :: Int
-    , knightEndurance   :: Int
-    , knightExp         :: Int
+-- data FightResult
+--     = KnightWins
+--     | DragonWins
+
+-- type Attack = Int
+-- type Health = Int
+-- type Endurance = Int
+-- type Exp = Int
+
+newtype Attack = MkAttack Int
+newtype Health = MkHealth Int
+newtype Endurance = MkEndurance Int
+newtype Exp = MkExp Int
+
+data Color
+    = Red
+    | Black
+    | Green
+
+data Knight = MkKnight
+    { knightHealth      :: Health
+    , knightAttack      :: Attack
+    , knightEndurance   :: Endurance
+    , knightExp         :: Exp
     }
 
-data Dragon = Dragon
-    { dragonHealth      :: Int
-    , dragonAttack      :: Int
-    , dragonType        :: [Char]
-    , dragonExp         :: Int
+data Dragon = MkDragon
+    { dragonHealth      :: Health
+    , dragonAttack      :: Attack
+    , dragonType        :: Color
+    , dragonChest       :: Chest
     }
 
-data Chest = Chest
+data Chest = MkChest
     { chestGold         :: Int
     }
 
-dragonFight :: Chest -> Dragon -> Knight -> [Char]
-dragonFight = error "TODO"
+data Result = MkResult
+    { resultText        :: [Char]
+    , resultKnight      :: Knight
+    , resultDragon      :: Dragon
+    }
+
+damage :: Attack -> Health -> Health
+damage (MkAttack atk) (MkHealth hp) = MkHealth (hp - atk)
+
+dragonFight :: Knight -> Dragon -> [Char]
+dragonFight = go 0
+    where
+        go :: Int -> Knight -> Dragon -> [Char]
+        go i k d
+            | dragonHealth d <= 0       = "Knight wins!"
+            | knightEndurance k <= 0    = "Knight ran away!"
+            | knightHealth k <= 0       = "Dragon wins!"
+            | mod i 10 == 0             = go (i+1) k { knightHealth = knightHealth k - dragonAttack d, knightEndurance = knightEndurance k - 1 } d { dragonHealth = dragonHealth d - knightAttack k }
+            | otherwise                 = go (i+1) k { knightEndurance = knightEndurance k - 1 } d { dragonHealth = dragonHealth d - knightAttack k }
+                
+
+arthur :: Knight
+arthur = MkKnight {knightHealth = 100, knightAttack = 20, knightEndurance = 10, knightExp = 0}
+
+smaug :: Dragon
+smaug = MkDragon {dragonHealth = 40, dragonAttack = 100, dragonType = "Red", dragonExp = 50, dragonChest = MkChest { chestGold = 10 }}
 
 ----------------------------------------------------------------------------
 -- Extra Challenges
