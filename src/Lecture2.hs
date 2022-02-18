@@ -79,19 +79,16 @@ return the removed element.
 >>> removeAt 10 [1 .. 5]
 (Nothing,[1,2,3,4,5])
 -}
-removeAt = error "TODO"
--- removeAt :: Int -> [a] -> (a, [a])
--- removeAt 0 (x : xs) = (x, xs)
--- removeAt n (x : xs) = x : removeAt (n-1) xs
-
--- - struggling
-
--- removeAt i list = go i [] list
---     where
---         go :: Int -> [a] -> [a] -> (a, [a])
---         go 0 left (x : xs) = (x, concat [left, xs])                 -- i is 0 so remove x and combine back together
---         go i left (x : xs) = go (i - 1) (left ++ [x]) xs
-
+-- removeAt = error "TODO"
+removeAt :: Int -> [a] -> (Maybe a, [a])
+removeAt _ [] = (Nothing, [])
+removeAt i (x : xs)
+    | i < 0             = (Nothing, x : xs)
+    | i == 0            = (Just x, xs)
+    | otherwise         = (idx, x : ys)
+        where
+            (idx, ys) = removeAt (i-1) xs
+        
 {- | Write a function that takes a list of lists and returns only
 lists of even lengths.
 
