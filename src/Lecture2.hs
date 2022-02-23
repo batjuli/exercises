@@ -29,8 +29,8 @@ module Lecture2
     , Dragon (..)
     , Chest (..)
     , dragonFight
-    , arthur
-    , smaug
+    -- , arthur
+    -- , smaug
 
       -- * Hard
     , isIncreasing
@@ -187,10 +187,10 @@ You're free to define any helper functions.
 -- type Endurance = Int
 -- type Exp = Int
 
-newtype Attack = MkAttack Int
-newtype Health = MkHealth Int
-newtype Endurance = MkEndurance Int
-newtype Exp = MkExp Int
+-- newtype Attack = MkAttack Int
+-- newtype Health = MkHealth Int
+-- newtype Endurance = MkEndurance Int
+-- newtype Exp = MkExp Int
 
 data Color
     = Red
@@ -198,15 +198,15 @@ data Color
     | Green
 
 data Knight = MkKnight
-    { knightHealth      :: Health
-    , knightAttack      :: Attack
-    , knightEndurance   :: Endurance
-    , knightExp         :: Exp
+    { knightHealth      :: Int
+    , knightAttack      :: Int
+    , knightEndurance   :: Int
+    , knightExp         :: Int
     }
 
 data Dragon = MkDragon
-    { dragonHealth      :: Health
-    , dragonAttack      :: Attack
+    { dragonHealth      :: Int
+    , dragonAttack      :: Int
     , dragonType        :: Color
     , dragonChest       :: Chest
     }
@@ -221,8 +221,8 @@ data Result = MkResult
     , resultDragon      :: Dragon
     }
 
-damage :: Attack -> Health -> Health
-damage (MkAttack atk) (MkHealth hp) = MkHealth (hp - atk)
+-- damage :: Attack -> Health -> Health
+-- damage atk (MkHealth hp) = MkHealth (hp - atk)
 
 dragonFight :: Knight -> Dragon -> [Char]
 dragonFight = go 0
@@ -236,11 +236,11 @@ dragonFight = go 0
             | otherwise                 = go (i+1) k { knightEndurance = knightEndurance k - 1 } d { dragonHealth = dragonHealth d - knightAttack k }
                 
 
-arthur :: Knight
-arthur = MkKnight {knightHealth = 100, knightAttack = 20, knightEndurance = 10, knightExp = 0}
+-- arthur :: Knight
+-- arthur = MkKnight {knightHealth = 100, knightAttack = 20, knightEndurance = 10, knightExp = 0}
 
-smaug :: Dragon
-smaug = MkDragon {dragonHealth = 40, dragonAttack = 100, dragonType = "Red", dragonExp = 50, dragonChest = MkChest { chestGold = 10 }}
+-- smaug :: Dragon
+-- smaug = MkDragon {dragonHealth = 40, dragonAttack = 100, dragonType = "Red", dragonExp = 50, dragonChest = MkChest { chestGold = 10 }}
 
 ----------------------------------------------------------------------------
 -- Extra Challenges
