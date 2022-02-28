@@ -80,7 +80,7 @@ Tuesday
   would work for **any** enumeration type in Haskell (e.g. 'Bool',
   'Ordering') and not just 'Weekday'?
 -}
-next :: Weekday -> Weekday
+next :: (Eq a, Enum a, Bounded a) => a -> a
 next x
     | x == maxBound     = minBound 
     | otherwise         = succ x
