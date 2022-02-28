@@ -93,7 +93,8 @@ weekday to the second.
 >>> daysTo Friday Wednesday
 5
 -}
-daysTo = error "TODO"
+daysTo :: Weekday -> Weekday -> Int
+daysTo a b = mod (7 + fromEnum b - fromEnum a) 7
 
 {-
 
